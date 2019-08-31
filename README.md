@@ -9,6 +9,6 @@ A react-native client to browse and download photos under the unsplash mobile-on
 - [x] auto the image hight
 - [x] use RN API to deal with cache
 - [ ] sort and search filter
-- [ ] detail screen
-- [ ] download operation
+- [x] detail screen
+- [x] download operation
 - [ ] publish
