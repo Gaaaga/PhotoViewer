@@ -52,10 +52,6 @@ class Main extends React.Component {
     });
   }
 
-  setRef = node => {
-    this.InfiniteScrollRef = node;
-  };
-
   goDetail = item => () => {
     this.props.navigation.push('Detail', { item });
   };
