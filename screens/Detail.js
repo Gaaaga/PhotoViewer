@@ -3,17 +3,18 @@ import {
   StyleSheet,
   View,
   Text,
-  ActivityIndicator,
   CameraRoll,
   ScrollView,
   TouchableWithoutFeedback,
   Image,
+  Platform,
 } from 'react-native';
+import * as Permissions from 'expo-permissions';
+import * as FileSystem from 'expo-file-system';
 import { Button, Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import moment from 'moment';
 import { ResizeImage } from '../components/ResizeImage';
-import { Main } from './Main';
 import Header from '../components/Header';
 import Layout from '../constants/Layout';
 
@@ -42,10 +43,32 @@ export class Detail extends React.Component {
     this.setState({ isModalVisible: !this.state.isModalVisible });
   };
 
-  download = () => {
-    const item = this.props.navigation.getParam('item');
-    this.setState({ downloadStatus: 'Downloading' });
-    CameraRoll.saveToCameraRoll(item.urls.regular, 'photo')
+  download = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    console.log(status);
+    if (status === 'granted') {
+      const item = this.props.navigation.getParam('item');
+      this.setState({ downloadStatus: 'Downloading' });
+      if (Platform.OS === 'android') {
+        FileSystem.downloadAsync(
+          item.urls.thumb,
+          `${FileSystem.documentDirectory}${item.id}.jpg`,
+        )
+          .then(({ uri }) => {
+            console.log('Finished downloading to ', uri);
+            this.saveImage(uri);
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      } else {
+        this.saveImage(item.urls.regular);
+      }
+    }
+  };
+
+  saveImage = url => {
+    CameraRoll.saveToCameraRoll(url, 'photo')
       .then(res => {
         console.log(res);
         this.setState({ downloadStatus: 'Download succeed' });
@@ -53,8 +76,10 @@ export class Detail extends React.Component {
           this.setState({ downloadStatus: '' });
         }, 1000);
       })
-      .catch(() => {
+      .catch(err => {
+        console.log(err);
         this.setState({ downloadStatus: 'Download failed' });
+
         setTimeout(() => {
           this.setState({ downloadStatus: '' });
         }, 1000);
@@ -83,7 +108,7 @@ export class Detail extends React.Component {
               <View style={{ alignItems: 'center' }}>
                 <Image
                   style={{
-                    width: Layout.window.width - 50,
+                    width: Math.floor(Layout.window.width) - 50,
                     height: 300,
                   }}
                   source={{ uri: item.urls.regular }}
@@ -93,6 +118,8 @@ export class Detail extends React.Component {
             </TouchableWithoutFeedback>
           </View>
           <View style={styles.infoContianer}>
+            <Text style={styles.title}>User:</Text>
+            <Text>{item.user.name || ' - '}</Text>
             <Text style={styles.title}>Description:</Text>
             <Text>{item.alt_description || ' - '}</Text>
             <Text style={styles.title}>Location:</Text>
@@ -136,10 +163,29 @@ export class Detail extends React.Component {
           animationOutTiming={100}
           backdropTransitionOutTiming={100}
         >
-          <ResizeImage
-            width={Math.floor(Layout.window.width) - 80}
-            sourceUrl={item.urls.regular}
-          />
+          {Platform.OS === 'ios' ? (
+            <ResizeImage
+              width={Math.floor(Layout.window.width) - 80}
+              sourceUrl={item.urls.regular}
+            />
+          ) : (
+            <View
+              style={{
+                width: Math.floor(Layout.window.width),
+                height: 500,
+                backgroundColor: '#fff',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                style={{
+                  width: Math.floor(Layout.window.width) - 80,
+                  height: 500,
+                }}
+                source={{ uri: item.urls.regular }}
+              />
+            </View>
+          )}
           <View
             style={{ position: 'absolute', bottom: 0, alignItems: 'center' }}
           >

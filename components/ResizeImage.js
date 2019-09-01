@@ -14,7 +14,6 @@ export class ResizeImage extends PureComponent {
 
   constructor(props) {
     super(props);
-    console.log(props)
     this.size = {
       width: props.width || Math.floor(Layout.window.width),
       height: 0,

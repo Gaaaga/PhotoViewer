@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Unsplash_Viewer",
-    "slug": "unsplash_viewer",
+    "name": "Photo Viewer",
+    "slug": "photo-viewer",
     "privacy": "public",
     "sdkVersion": "34.0.0",
     "platforms": [
@@ -24,6 +24,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "A React-Native client to browse and download photos on Unsplash mobile-only collection.",
+    "githubUrl": "https://github.com/GaaPill/PhotoViewer"
   }
 }
