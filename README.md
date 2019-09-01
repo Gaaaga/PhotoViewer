@@ -22,4 +22,7 @@ https://expo.io/@viewer_test/photo-viewer
 
 
 ### demo
+
+Better to use proxy if the image loading process is slow
+
 ![demo](demo_ios.gif)
