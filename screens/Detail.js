@@ -51,7 +51,7 @@ export class Detail extends React.Component {
       this.setState({ downloadStatus: 'Downloading' });
       if (Platform.OS === 'android') {
         FileSystem.downloadAsync(
-          item.urls.thumb,
+          item.links.download,
           `${FileSystem.documentDirectory}${item.id}.jpg`,
         )
           .then(({ uri }) => {
@@ -62,7 +62,7 @@ export class Detail extends React.Component {
             console.error(error);
           });
       } else {
-        this.saveImage(item.urls.regular);
+        this.saveImage(item.links.download);
       }
     }
   };

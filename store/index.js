@@ -11,10 +11,6 @@ class Store {
 
   @observable search = '';
 
-  @observable make = [];
-
-  @observable cameraModel = [];
-
   @observable orderType = ORDERTYPEP.VA;
 
   @observable cameraMake = [];
