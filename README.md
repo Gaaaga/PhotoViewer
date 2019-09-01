@@ -19,3 +19,6 @@ A react-native client to browse and download photos on unsplash mobile-only coll
 - `npm run init-data` to init local data through unsplash developer api
 - `npm start` to start
 
+
+### demo
+![demo](demo_ios.gif)
