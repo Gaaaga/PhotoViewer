@@ -22,7 +22,7 @@
     "mobx": "3.2.2",
     "mobx-react": "4.2.2",
     "moment": "^2.24.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-dom": "^16.8.6",
